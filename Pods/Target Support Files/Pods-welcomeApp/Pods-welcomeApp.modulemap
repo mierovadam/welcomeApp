@@ -1,0 +1,6 @@
+framework module Pods_welcomeApp {
+  umbrella header "Pods-welcomeApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
