@@ -41,6 +41,28 @@ class ViewController: UIViewController, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
+    @IBAction func filterByCategory(_ sender: UIButton){
+        let buttonText = (sender.titleLabel?.text)!
+        
+        movieViewModel.filterByCategory(buttonText, completion: {
+            //reload table
+            self.tableView.dataSource = self
+            self.tableView.reloadData()
+        })
+        
+    }
+    
+    @IBAction func searchByTitle(_ sender: UITextField) {
+        let searchText = sender.text
+        
+        movieViewModel.filterByTitle(searchText ?? "", completion: {
+            //reload table
+            self.tableView.dataSource = self
+            self.tableView.reloadData()
+        })
+        
+    }
+    
     //Prepare movie info screen when cell selected
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MovieDetail" {

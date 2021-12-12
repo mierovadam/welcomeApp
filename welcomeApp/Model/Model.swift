@@ -52,3 +52,22 @@ struct Host: Decodable {
 struct HostUrl: Decodable {
     let url: String
 }
+
+struct sessionResponse: Decodable {
+    let err:String
+    let status: Int
+    let message: String
+    let data : String
+}
+
+struct applicationToken: Decodable {
+    let status: Int
+    let err: String
+    let data: Token
+    let message: String
+}
+
+struct Token: Decodable{
+    let token: String
+}
+

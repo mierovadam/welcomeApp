@@ -29,6 +29,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="274" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="searchByTitle:" destination="BYZ-38-t0r" eventType="editingChanged" id="4TX-yT-aM5"/>
+                                        </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6m-9l-1rb">
                                         <rect key="frame" x="286" y="0.0" width="96" height="34"/>
@@ -47,31 +50,49 @@
                                         <rect key="frame" x="0.0" y="0.0" width="48" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="Drama"/>
+                                        <connections>
+                                            <action selector="filterByCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="33w-wx-36I"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjA-Up-oFs">
                                         <rect key="frame" x="60" y="0.0" width="47" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="Action"/>
+                                        <connections>
+                                            <action selector="filterByCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="blT-t4-vkG"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fw-ih-1Cl">
                                         <rect key="frame" x="119" y="0.0" width="57" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="Fantasy"/>
+                                        <connections>
+                                            <action selector="filterByCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="I9I-7E-FtW"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8f-l1-Rpx">
                                         <rect key="frame" x="188" y="0.0" width="43" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="Crime"/>
+                                        <connections>
+                                            <action selector="filterByCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2KO-gb-1m3"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIt-bG-bdu">
                                         <rect key="frame" x="243" y="0.0" width="61" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="Comedy"/>
+                                        <connections>
+                                            <action selector="filterByCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tjR-Ej-fqx"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="26x-Tm-8XW">
                                         <rect key="frame" x="316" y="0.0" width="30" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="All"/>
+                                        <connections>
+                                            <action selector="filterByCategory:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iOg-Pi-gXv"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
