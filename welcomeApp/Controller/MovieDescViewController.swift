@@ -1,7 +1,6 @@
 import UIKit
 
-class MovieViewController: UIViewController {
-    
+class MovieDescViewController: UIViewController {
     
     @IBOutlet weak var titleNavBar: UINavigationBar!
     @IBOutlet weak var yearLBL: UILabel!
@@ -11,7 +10,7 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var overviewLBL: UILabel!
     
-    var movie:MovieDescription?
+    public var movie:MovieDescription?
     let utils:Utils = Utils()
     
     override func viewDidLoad() {

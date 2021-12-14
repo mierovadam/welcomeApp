@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class MoviesViewModel {
 
@@ -10,18 +10,22 @@ class MoviesViewModel {
 
     private var filteredMovieList = [Movie]()
     
-    func initialization(completion: @escaping ([String:Any]) -> ()) {
+    func initialization(_ progressBar:UIProgressView, completion: @escaping ([String:Any]) -> ()) {
         
         var baseRequest: BaseRequest = BaseRequest(requestName: "getHostUrl")
         
         apiService.sendRequest(baseRequest, completion: { (result) in
             let urlDict = result["data"] as! [String:Any]
             self.apiService.hostURL = urlDict["url"] as! String
-    
+
+            progressBar.progress = 0.17
+            
             baseRequest = BaseRequest(requestName: "clearSession")
             self.apiService.sendRequest(baseRequest, completion: { (result) in
 //                print("clearSession Result:\n \(result)")
-                
+
+                progressBar.progress = 0.34
+
                 baseRequest = BaseRequest(requestName: "applicationToken")
                 self.apiService.sendRequest(baseRequest, completion: { (result) in
                     let tokenDict = result["data"] as! [String:Any]
@@ -34,10 +38,15 @@ class MoviesViewModel {
                                    "udid":"aaaaa",
                                    "token":self.token!]
                     }
+                    
+                    progressBar.progress = 0.51
+
                     baseRequest = BaseRequest(requestName: "setSettings",parameters: parameters)
                     self.apiService.sendRequest(baseRequest, completion: { (result) in
 //                        print("setSettings Results:\n \(result)")
                         
+                        progressBar.progress = 0.68
+
                         baseRequest = BaseRequest(requestName: "validateVersion",parameters: parameters)
                         self.apiService.sendRequest(baseRequest, completion: { (result) in
                             let stateDict = result["data"] as! [String:Any]
@@ -47,10 +56,15 @@ class MoviesViewModel {
                                 print("VersionState not supported/deprecated")
                                 return
                             }
+
+                            progressBar.progress = 0.85
+                            
                             baseRequest = BaseRequest(requestName: "generalDeclaration",parameters: parameters)
                             self.apiService.sendRequest(baseRequest, completion: { (result) in
                                 let data = result["data"] as! [String:Any]
                                 let banner = data["banner"] as! [String:Any]
+                                
+                                progressBar.progress = 1
                                 
                                 completion(banner)
                             })

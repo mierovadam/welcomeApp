@@ -1,37 +1,46 @@
 import UIKit
 
 
-class ViewController: UIViewController, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDelegate {
 
-    private var movieViewModel = MoviesViewModel()
+    public var movieViewModel:MoviesViewModel = MoviesViewModel()
+    public var bannerData:Dict =  [String:Any]()
     
     @IBOutlet weak var sortByButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     private var sortedFlag = 0  //current sort method, 0 by name or 1 if by year
     
-    var selectedMovie:MovieDescription?
-    var selectedIndexPath: IndexPath!
+    private var selectedMovie:MovieDescription?
+    private var selectedIndexPath: IndexPath!
     
-    var bannerData:Dict =  [String:Any]()
+    private var myNav: MyNavigationController = MyNavigationController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //reload data into table
+        self.tableView.dataSource = self
+        self.tableView.reloadData()
         
-        movieViewModel.initialization{ (banner) in
-            self.movieViewModel.fetchMovies { //and then fetch movies for list
-                //reload table
-                self.tableView.dataSource = self
-                self.tableView.reloadData()
-            }
-            
-            self.bannerData = banner
-            self.performSegue(withIdentifier: "bannerSegue", sender: self)
-        }
+        //show banner
+        showBanner()
+        
         tableView.delegate = self
+        self.navigationController?.navigationBar.isHidden = false
     }
     
-
+    func showBanner(){
+        if let bannerViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "BannerViewController") as? BannerViewController {
+            
+            bannerViewController.bannerData = bannerData
+            bannerViewController.modalPresentationStyle = .overFullScreen
+            self.navigationController?.navigationBar.isHidden = true
+            
+            present(bannerViewController, animated: true)
+        }
+    }
+    
+    
     @IBAction func sortButtonAction(_ sender: Any) {
         if sortedFlag == 0 {
             movieViewModel.sortMoviesByYear()
@@ -54,7 +63,6 @@ class ViewController: UIViewController, UITableViewDelegate {
             self.tableView.dataSource = self
             self.tableView.reloadData()
         })
-        
     }
     
     @IBAction func searchByTitle(_ sender: UITextField) {
@@ -70,13 +78,7 @@ class ViewController: UIViewController, UITableViewDelegate {
     
     //Prepare movie info screen when cell selected
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "MovieDetail" {
-            let controller = segue.destination as! MovieViewController
-            
-            //set movie property for MovieViewController to show
-            controller.movie = selectedMovie
-
-        } else if segue.identifier == "bannerSegue" {
+        if segue.identifier == "bannerSegue" {
             let controller = segue.destination as! BannerViewController
             controller.bannerData = bannerData
 
@@ -85,7 +87,7 @@ class ViewController: UIViewController, UITableViewDelegate {
     
 }
 
-extension ViewController: UITableViewDataSource {
+extension MoviesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movieViewModel.numOfMovies()
@@ -102,8 +104,14 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         movieViewModel.fetchDetailedMovie(cellIndexPath: indexPath, completion: {(movieDescription) -> Void in
-            self.selectedMovie = movieDescription
-            self.performSegue(withIdentifier: "MovieDetail", sender: self)
+            
+            if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
+                movieDescViewController.movie = movieDescription
+                self.navigationController?.pushViewController(movieDescViewController, animated: true)
+            }
+            
+            self.myNav.pushMovieViewController(movieDescription, animated: true)
+            
         })
                 
         tableView.deselectRow(at: indexPath, animated: true)

@@ -23,12 +23,17 @@ class BannerViewController: UIViewController {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.navigationController?.navigationBar.isHidden = true
             self.dismiss(animated: true, completion: nil)
          }
+        
+        
+        self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
     }
     
     
     @IBAction func skip(_ sender: Any) {
+        self.navigationController?.navigationBar.isHidden = true
         dismiss(animated: true, completion: nil)
     }
     
