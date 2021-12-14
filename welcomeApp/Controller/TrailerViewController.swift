@@ -9,8 +9,7 @@ class TrailerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let videoID = trailerLink.split(separator: "=")[1]
-
+        let videoID = trailerLink.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: true)[1]
         playerView.load(videoId: String(videoID))
         
     }

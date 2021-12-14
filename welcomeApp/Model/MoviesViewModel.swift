@@ -1,48 +1,135 @@
 import Foundation
 
-
 class MoviesViewModel {
 
     private var apiService = ApiService()
     private var moviesList = [Movie]()
+    let decoder = JSONDecoder()
     
+    private var token: Any?
+
     private var filteredMovieList = [Movie]()
     
-    func fetcHostURL(completion: @escaping () -> ()) {
-        apiService.getHostUrl { [weak self] (result) in
-            switch result {
-            case .success(let url):
-                self?.apiService.hostURL = url
-                completion()
-            case .failure(let error):
-                print("Error processing url json: \(error)")
-            }
-        }
+    func initialization(completion: @escaping ([String:Any]) -> ()) {
+        
+        var baseRequest: BaseRequest = BaseRequest(requestName: "getHostUrl")
+        
+        apiService.sendRequest(baseRequest, completion: { (result) in
+            let urlDict = result["data"] as! [String:Any]
+            self.apiService.hostURL = urlDict["url"] as! String
+    
+            baseRequest = BaseRequest(requestName: "clearSession")
+            self.apiService.sendRequest(baseRequest, completion: { (result) in
+//                print("clearSession Result:\n \(result)")
+                
+                baseRequest = BaseRequest(requestName: "applicationToken")
+                self.apiService.sendRequest(baseRequest, completion: { (result) in
+                    let tokenDict = result["data"] as! [String:Any]
+                    self.token = tokenDict["token"]
+                    
+                    var parameters: [String: Any] {
+                           return ["resolution": "3x",
+                                   "application_version": 1.3,
+                                   "OS_Version": 14.5,
+                                   "udid":"aaaaa",
+                                   "token":self.token!]
+                    }
+                    baseRequest = BaseRequest(requestName: "setSettings",parameters: parameters)
+                    self.apiService.sendRequest(baseRequest, completion: { (result) in
+//                        print("setSettings Results:\n \(result)")
+                        
+                        baseRequest = BaseRequest(requestName: "validateVersion",parameters: parameters)
+                        self.apiService.sendRequest(baseRequest, completion: { (result) in
+                            let stateDict = result["data"] as! [String:Any]
+                            let state = stateDict["versionState"] as! String
+                            
+                            if state == "deprecated" || state == "notSupported" {
+                                print("VersionState not supported/deprecated")
+                                return
+                            }
+                            baseRequest = BaseRequest(requestName: "generalDeclaration",parameters: parameters)
+                            self.apiService.sendRequest(baseRequest, completion: { (result) in
+                                let data = result["data"] as! [String:Any]
+                                let banner = data["banner"] as! [String:Any]
+                                
+                                completion(banner)
+                            })
+                        })
+                    })
+                })
+            })
+        })
     }
     
+    
     func fetchMovies(completion: @escaping () -> ()) {
-        apiService.getMovies{ [weak self] (result) in
-            switch result {
-            case .success(let moviesData):
-                self?.moviesList = moviesData.data.movies
-                self?.filteredMovieList = moviesData.data.movies
-                self?.sortMoviesByTitle()  // default first loading will be sorted by movie title
-                completion()
-            case .failure(let error):
-                print("Error processing url json: \(error)")
+        var parameters: [String:Any] {return ["token": token!]}
+        
+        let baseRequest: BaseRequest = BaseRequest(requestName: "getMovies",parameters: parameters)
+        
+        self.apiService.sendRequest(baseRequest, completion: { (result) in
+            let data = result["data"] as! Dict
+            
+            if let moviesData = data["movies"] as? [[String:Any]] {
+                self.moviesList = self.dictToMovieList(moviesData)
+            }else {
+                print("Issue at parsing movie")
             }
+            self.filteredMovieList = self.moviesList //initialize both lists as complete
+            self.sortMoviesByYear()
+            
+            completion()
+            })
+    }
+    
+    func dictToMovieList(_ dict:[[String:Any]]) -> [Movie]{
+        var tempArr:[Movie] = [Movie]()
+        for movie in dict {
+            var tempMovie:Movie = Movie()
+            tempMovie.id = movie["id"] as? String ?? ""
+            tempMovie.name = movie["name"] as? String ?? ""
+            tempMovie.year = movie["year"] as? String ?? ""
+            tempMovie.category = movie["category"] as? String ?? ""
+            tempMovie.cenimasId = movie["cenimasId"] as? [Int] ?? []
+            
+            tempArr.append(tempMovie)
         }
+        return tempArr
     }
     
     func fetchDetailedMovie(cellIndexPath index:IndexPath, completion: @escaping (MovieDescription) -> ()) {
-        apiService.getDetailedMovie(id: cellForRowAt(indexPath: index).id, completion: { (result) in
-            switch result {
-            case .success(let movieDescription):
-                completion(movieDescription)
-            case .failure(let error):
-                print("Error processing url json: \(error)")
+
+        var parameters: [String:Any] {return ["token": token!]}
+        
+        let baseRequest: BaseRequest = BaseRequest(requestName: "descriptionMovies/\(cellForRowAt(indexPath: index).id)", parameters: parameters)
+        
+        self.apiService.sendRequest(baseRequest, completion: { (result) in
+            if let data = result["data"] as? [String:Any]{
+                let movie = self.parseMovieDesc(data)
+                completion(movie)
+            }else {
+                print("Something went wrong parsing movie desc")
             }
+            
         })
+
+    }
+    
+    func parseMovieDesc(_ data:[String:Any]) -> MovieDescription {
+        var tempMovie:MovieDescription = MovieDescription()
+        
+        tempMovie.id = data["id"] as? String ?? ""
+        tempMovie.name = data["name"] as? String ?? ""
+        tempMovie.year = data["year"] as? String ?? ""
+        tempMovie.category = data["category"] as? String ?? ""
+        tempMovie.description = data["description"] as? String ?? ""
+        tempMovie.imageUrl = data["imageUrl"] as? String ?? ""
+        tempMovie.promoUrl = data["promoUrl"] as? String ?? ""
+        tempMovie.rate = data["rate"] as? String ?? ""
+        tempMovie.hour = data["hour"] as? String ?? ""
+        tempMovie.cenimasId = data["cenimasId"] as? [Int] ?? []
+
+        return tempMovie
     }
     
     
@@ -92,7 +179,7 @@ class MoviesViewModel {
     }
     
     func sortMoviesByYear(){
-        filteredMovieList.sort { $0.year < $1.year }
+        filteredMovieList.sort { $1.year.localizedStandardCompare($0.year) == .orderedAscending }
     }
 
 }

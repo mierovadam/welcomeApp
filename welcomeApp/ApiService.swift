@@ -1,139 +1,41 @@
 import Foundation
+import Alamofire
+
+typealias Dict = [String: Any]
 
 class ApiService {
 
     private var dataTask: URLSessionDataTask?
-    public var hostURL = ""
+    public var hostURL = "http://mobile.inmanage.com/mobile-test/"
     
-    func getHostUrl(completion: @escaping (Result<String, Error>) -> Void) {
+    
+    public func sendRequest(_ request: BaseRequest, completion: @escaping (Dict) -> Void) {
         
-        let getHostUrlString = "http://mobile.inmanage.com/mobile-test/getHostUrl.json"
+        let header = HTTPHeaders(["TOKEN" : "inmange_secure"])
+        let baseRequest = "\(hostURL)\(request.requestName).json"
         
-        guard let url = URL(string: getHostUrlString) else {return}
-        
-        // Create URL Session - work on the background
-        dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
+        AF.request(baseRequest, method: .get, parameters: request.parameters, headers: header).responseJSON { response in
             // Handle Error
-            if let error = error {
-                completion(.failure(error))
+            if let error = response.error {
                 print("DataTask error: \(error.localizedDescription)")
                 return
             }
             
-            guard let response = response as? HTTPURLResponse else {
+            guard let res = response.response else {
                 // Handle Empty Response
                 print("Empty Response")
                 return
             }
-            print("Response status code: \(response.statusCode)")
             
-            guard let data = data else {
-                // Handle Empty Data
+            print("Response status code: \(res.statusCode)")
+             
+            if let data = response.value as? Dict {
+                completion(data)
+            } else {
                 print("Empty Data")
-                return
             }
-            
-            do {
-                // Parse the data
-                let decoder = JSONDecoder()
-                let jsonData = try decoder.decode(Host.self, from: data)
-                
-                // Back to the main thread
-                DispatchQueue.main.async {
-                    completion(.success(jsonData.data.url))
-                }
-            } catch let error {
-                completion(.failure(error))
-            }
-            
-        }
-        dataTask?.resume()
-    }
-    
-    func getMovies(completion: @escaping (Result<MoviesResult, Error>) -> Void) {
-        
-        guard let url = URL(string: hostURL + "getMovies.json") else {return}
-        
-        // Create URL Session - work on the background
-        dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            // Handle Error
-            if let error = error {
-                completion(.failure(error))
-                print("DataTask error: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                // Handle Empty Response
-                print("Empty Response")
-                return
-            }
-            print("Response status code: \(response.statusCode)")
-            
-            guard let data = data else {
-                // Handle Empty Data
-                print("Empty Data")
-                return
-            }
-            
-            do {
-                // Parse the data
-                let decoder = JSONDecoder()
-                let jsonData = try decoder.decode(MoviesResult.self, from: data)
-                                
-                // Back to the main thread
-                DispatchQueue.main.async {
-                    completion(.success(jsonData))
-                }
-            } catch let error {
-                completion(.failure(error))
-            }
-            
-        }
-        dataTask?.resume()
-    }
-    
-    func getDetailedMovie(id: String, completion: @escaping (Result<MovieDescription, Error>) -> Void) {
-        
-        guard let url = URL(string: hostURL + "descriptionMovies/" + id + ".json") else {return}
 
-        // Create URL Session - work on the background
-        dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            // Handle Error
-            if let error = error {
-                completion(.failure(error))
-                print("DataTask error: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                // Handle Empty Response
-                print("Empty Response")
-                return
-            }
-            print("Response status code: \(response.statusCode)")
-            
-            guard let data = data else {
-                // Handle Empty Data
-                print("Empty Data")
-                return
-            }
-            
-            do {
-                // Parse the data
-                let decoder = JSONDecoder()
-                let jsonData = try decoder.decode(MovieDescription.self, from: data)
-                                
-                // Back to the main thread
-                DispatchQueue.main.async {
-                    completion(.success(jsonData))
-                }
-            } catch let error {
-                completion(.failure(error))
-            }
-            
         }
-        dataTask?.resume()
+
     }
 }

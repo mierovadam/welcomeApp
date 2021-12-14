@@ -8,7 +8,6 @@ class MovieTableCell: UITableViewCell {
     // Setup movies values
     func setCellWithValuesOf(_ movie:Movie) {
         movieNameLabel.text = movie.name
-        releaseYearLabel.text = movie.year
+        releaseYearLabel.text = "\(movie.year)"
     }
-    
 }

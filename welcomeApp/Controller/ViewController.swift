@@ -1,7 +1,5 @@
 import UIKit
 
-//QUESTIONS:
-// err in movie detailed can be string or a json, how to deal with that (json in gladiator movie)
 
 class ViewController: UIViewController, UITableViewDelegate {
 
@@ -12,18 +10,23 @@ class ViewController: UIViewController, UITableViewDelegate {
     
     private var sortedFlag = 0  //current sort method, 0 by name or 1 if by year
     
-    var selectedMovie:MovieDetailed?
+    var selectedMovie:MovieDescription?
     var selectedIndexPath: IndexPath!
+    
+    var bannerData:Dict =  [String:Any]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        movieViewModel.fetcHostURL{ //fetch host url
+        movieViewModel.initialization{ (banner) in
             self.movieViewModel.fetchMovies { //and then fetch movies for list
                 //reload table
                 self.tableView.dataSource = self
                 self.tableView.reloadData()
             }
+            
+            self.bannerData = banner
+            self.performSegue(withIdentifier: "bannerSegue", sender: self)
         }
         tableView.delegate = self
     }
@@ -32,9 +35,11 @@ class ViewController: UIViewController, UITableViewDelegate {
     @IBAction func sortButtonAction(_ sender: Any) {
         if sortedFlag == 0 {
             movieViewModel.sortMoviesByYear()
+            sortByButton.setTitle("Sort By Title", for: .normal)
             sortedFlag = 1
         } else {
             movieViewModel.sortMoviesByTitle()
+            sortByButton.setTitle("Sort By Year", for: .normal)
             sortedFlag = 0
         }
         self.tableView.dataSource = self
@@ -71,6 +76,10 @@ class ViewController: UIViewController, UITableViewDelegate {
             //set movie property for MovieViewController to show
             controller.movie = selectedMovie
 
+        } else if segue.identifier == "bannerSegue" {
+            let controller = segue.destination as! BannerViewController
+            controller.bannerData = bannerData
+
         }
     }    
     
@@ -93,7 +102,7 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         movieViewModel.fetchDetailedMovie(cellIndexPath: indexPath, completion: {(movieDescription) -> Void in
-            self.selectedMovie = movieDescription.data
+            self.selectedMovie = movieDescription
             self.performSegue(withIdentifier: "MovieDetail", sender: self)
         })
                 

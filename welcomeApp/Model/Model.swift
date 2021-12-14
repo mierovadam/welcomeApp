@@ -1,73 +1,24 @@
 import Foundation
+import CoreGraphics
 
-struct MoviesResult: Decodable {
-    let err: String
-    let status: Int
-    let data: Movies
+
+struct Movie {
+    var id: String = ""
+    var name: String = ""
+    var year: String = ""
+    var category: String = ""
+    var cenimasId: [Int] = [Int]()
 }
 
-struct Movies: Decodable {
-    let movies: [Movie]
-    let movies_last_update: Int
+struct MovieDescription {
+    var id: String = ""
+    var name: String = ""
+    var year: String = ""
+    var category: String = ""
+    var description: String = ""
+    var imageUrl: String = ""
+    var promoUrl: String = ""
+    var rate: String = ""
+    var hour: String = ""
+    var cenimasId: [Int] = []
 }
-
-struct Movie: Decodable {
-    let id: String
-    let name: String
-    let year: String
-    let category: String
-    let cenimasId: [Int]
-}
-
-struct MovieDescription: Decodable {
-    let status:Int
-    let err: String
-    let data:MovieDetailed
-}
-
-//struct error: Decodable {
-//    let id: String
-//    let name: String
-//}
-
-struct MovieDetailed: Decodable {
-    let id: String
-    let name: String
-    let year: String
-    let category: String
-    let description: String
-    let imageUrl: String
-    let promoUrl: String
-    let rate: String
-    let hour: String
-    let cenimasId: [Int]
-}
-
-struct Host: Decodable {
-    let err: String
-    let status: Int
-    let data: HostUrl
-}
-
-struct HostUrl: Decodable {
-    let url: String
-}
-
-struct sessionResponse: Decodable {
-    let err:String
-    let status: Int
-    let message: String
-    let data : String
-}
-
-struct applicationToken: Decodable {
-    let status: Int
-    let err: String
-    let data: Token
-    let message: String
-}
-
-struct Token: Decodable{
-    let token: String
-}
-

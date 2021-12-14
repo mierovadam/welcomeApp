@@ -6,4 +6,5 @@ target 'welcomeApp' do
 use_frameworks!
 platform :ios, '14.5'
 pod 'youtube-ios-player-helper-swift'
+pod 'Alamofire', '~> 5.4'
 end

@@ -11,15 +11,16 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var overviewLBL: UILabel!
     
-    var movie:MovieDetailed?
-
+    var movie:MovieDescription?
+    let utils:Utils = Utils()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         updateUI()
         
         guard let url = URL(string: movie!.imageUrl) else {return}
-        downloadImage(from: url)
+        utils.downloadImage(from: url, to: posterImageView)
     }
     
     func updateUI(){
@@ -29,19 +30,6 @@ class MovieViewController: UIViewController {
 //        theatersLBL.text = movie.cenimasId
         overviewLBL.text = movie?.description
         
-    }
-    
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
-    func downloadImage(from url: URL) {
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() { [weak self] in
-                self?.posterImageView.image = UIImage(data: data)
-            }
-        }
     }
     
     @IBAction func openTrailer(_ sender: Any) {
