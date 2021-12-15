@@ -5,9 +5,10 @@ class MoviesViewModel {
     private var apiService = ApiService()
     private var moviesList = [Movie]()
     let decoder = JSONDecoder()
-    
+        
     private var token: Any?
-
+    public var cinemaIdDict :[String:String] = [String:String]()
+    
     private var filteredMovieList = [Movie]()
     
     func initialization(_ progressBar:UIProgressView, completion: @escaping ([String:Any]) -> ()) {
@@ -59,12 +60,20 @@ class MoviesViewModel {
 
                             progressBar.progress = 0.85
                             
+                            
                             baseRequest = BaseRequest(requestName: "generalDeclaration",parameters: parameters)
                             self.apiService.sendRequest(baseRequest, completion: { (result) in
                                 let data = result["data"] as! [String:Any]
                                 let banner = data["banner"] as! [String:Any]
                                 
                                 progressBar.progress = 1
+                                
+                                baseRequest = BaseRequest(requestName: "getCinemas",parameters: parameters)
+                                self.apiService.sendRequest(baseRequest, completion: { result in
+                                    let data = result["data"] as? [String: Any]
+                                    let cinemas = data?["cinemas"] as? [[String:Any]]
+                                    self.CinemasToDictionary(cinemas ?? [[String:Any]]())
+                                })
                                 
                                 completion(banner)
                             })
@@ -75,6 +84,11 @@ class MoviesViewModel {
         })
     }
     
+    func CinemasToDictionary(_ data:[[String:Any]]){
+        for item in data {
+            cinemaIdDict[item["id"] as! String] = item["name"] as? String
+        }
+    }
     
     func fetchMovies(completion: @escaping () -> ()) {
         var parameters: [String:Any] {return ["token": token!]}

@@ -1,23 +1,24 @@
 import UIKit
-
+import SideMenu
 
 class MoviesViewController: UIViewController, UITableViewDelegate {
 
+    private var myNav: MyNavigationController = MyNavigationController()
     public var movieViewModel:MoviesViewModel = MoviesViewModel()
-    public var bannerData:Dict =  [String:Any]()
+    
     
     @IBOutlet weak var sortByButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     private var sortedFlag = 0  //current sort method, 0 by name or 1 if by year
     
+    public var bannerData:Dict =  [String:Any]()
     private var selectedMovie:MovieDescription?
     private var selectedIndexPath: IndexPath!
-    
-    private var myNav: MyNavigationController = MyNavigationController()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //reload data into table
         self.tableView.dataSource = self
         self.tableView.reloadData()
@@ -26,8 +27,27 @@ class MoviesViewController: UIViewController, UITableViewDelegate {
         showBanner()
         
         tableView.delegate = self
+        
+        //Nav bar settings
         self.navigationController?.navigationBar.isHidden = false
+        navigationItem.hidesBackButton = true
+        
     }
+    
+    @IBAction func openSideMenu(_ sender: Any){
+        // Define the menu
+        if let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SideMenuViewController") as? UITableViewController {
+            
+            let menu = SideMenuNavigationController(rootViewController: vc)
+            menu.leftSide = true
+
+            
+            present(menu, animated: true, completion: nil)
+
+            
+        }
+    }
+    
     
     func showBanner(){
         if let bannerViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "BannerViewController") as? BannerViewController {
@@ -76,15 +96,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate {
         
     }
     
-    //Prepare movie info screen when cell selected
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "bannerSegue" {
-            let controller = segue.destination as! BannerViewController
-            controller.bannerData = bannerData
-
-        }
-    }    
-    
 }
 
 extension MoviesViewController: UITableViewDataSource {
@@ -107,6 +118,7 @@ extension MoviesViewController: UITableViewDataSource {
             
             if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
                 movieDescViewController.movie = movieDescription
+                movieDescViewController.cinemaDict = self.movieViewModel.cinemaIdDict
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
             

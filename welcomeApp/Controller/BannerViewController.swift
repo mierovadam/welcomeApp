@@ -13,11 +13,12 @@ class BannerViewController: UIViewController {
         super.viewDidLoad()
         
         if bannerData["isImage"] as! String == "true" {
+            playerView.isHidden = true
             let url = URL(string: bannerData["imageUrl"] as! String)!
             utils.downloadImage(from: url, to: bannerImgView)
         }else {
-//            let trailerUrl = bannerData["videoUrl"] as! String
-            let trailerUrl = "https://www.youtube.com/watch?v=HuTE7v3l4nA&t=626s"
+            bannerImgView.isHidden = true
+            let trailerUrl = bannerData["videoUrl"] as! String
             let videoID = trailerUrl.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: true)[1]
             playerView.load(videoId: String(videoID))
         }

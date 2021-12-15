@@ -18,6 +18,7 @@
 		930F3DFB2759083D00BB82E2 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3DFA2759083D00BB82E2 /* ApiService.swift */; };
 		930F3DFD2759088A00BB82E2 /* MovieTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3DFC2759088A00BB82E2 /* MovieTableCell.swift */; };
 		930F3E0327591D6000BB82E2 /* MoviesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3E0227591D6000BB82E2 /* MoviesViewModel.swift */; };
+		93566915276A2BA0009A9C33 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93566914276A2BA0009A9C33 /* SideMenuViewController.swift */; };
 		935CA83E2767547A0019D0C7 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935CA83D2767547A0019D0C7 /* BannerViewController.swift */; };
 		935CA8402767703A0019D0C7 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935CA83F2767703A0019D0C7 /* Utils.swift */; };
 		9392495727689AA100439A11 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9392495627689AA100439A11 /* SplashViewController.swift */; };
@@ -41,6 +42,7 @@
 		930F3DFA2759083D00BB82E2 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		930F3DFC2759088A00BB82E2 /* MovieTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableCell.swift; sourceTree = "<group>"; };
 		930F3E0227591D6000BB82E2 /* MoviesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewModel.swift; sourceTree = "<group>"; };
+		93566914276A2BA0009A9C33 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		935CA83D2767547A0019D0C7 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		935CA83F2767703A0019D0C7 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		9392495627689AA100439A11 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		930F3DE12758EFCD00BB82E2 /* welcomeApp */ = {
 			isa = PBXGroup;
 			children = (
+				93566911276A1FB2009A9C33 /* SideMenu */,
 				939249582768C4B700439A11 /* Service */,
 				930F3DFF275917F200BB82E2 /* Controller */,
 				930F3DFE275917E700BB82E2 /* Model */,
@@ -138,6 +141,14 @@
 				9392495627689AA100439A11 /* SplashViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		93566911276A1FB2009A9C33 /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				93566914276A2BA0009A9C33 /* SideMenuViewController.swift */,
+			);
+			path = SideMenu;
 			sourceTree = "<group>";
 		};
 		939249582768C4B700439A11 /* Service */ = {
@@ -275,6 +286,7 @@
 				930F3DFD2759088A00BB82E2 /* MovieTableCell.swift in Sources */,
 				9392495A2768C4FB00439A11 /* MyNavigationController.swift in Sources */,
 				93DCBC672760E32D00473EA9 /* TrailerViewController.swift in Sources */,
+				93566915276A2BA0009A9C33 /* SideMenuViewController.swift in Sources */,
 				935CA8402767703A0019D0C7 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
