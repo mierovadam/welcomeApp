@@ -1,6 +1,7 @@
 import UIKit
+import SideMenu
 
-class MyNavigationController: UINavigationController {
+class MoviesNavigationController: UINavigationController {
     
     var movieDesc:MovieDescription = MovieDescription()
     
@@ -12,7 +13,6 @@ class MyNavigationController: UINavigationController {
     func pushMovieViewController(_ movie: MovieDescription, animated: Bool) {
         if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
             
-            movieDescViewController.movie = movie
             super.pushViewController(movieDescViewController, animated: animated)
 
         }

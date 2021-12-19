@@ -47,7 +47,7 @@
             </objects>
             <point key="canvasLocation" x="1831.8840579710147" y="95.758928571428569"/>
         </scene>
-        <!--Movie App-->
+        <!--Movies-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="MoviesViewController" id="BYZ-38-t0r" customClass="MoviesViewController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -187,10 +187,10 @@
                             <constraint firstItem="bip-9q-XuY" firstAttribute="top" secondItem="2zu-3t-s2P" secondAttribute="bottom" constant="8" id="z8e-HX-UX6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Movie App" id="xFS-G6-JwQ">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="list.dash" catalog="system" id="cOB-Of-PN9">
+                    <navigationItem key="navigationItem" title="Movies" id="xFS-G6-JwQ">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3" catalog="system" id="cOB-Of-PN9">
                             <connections>
-                                <action selector="openSideMenu:" destination="BYZ-38-t0r" id="CbH-j8-r6H"/>
+                                <action selector="didTapMenuButton" destination="BYZ-38-t0r" id="07l-i3-xGj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -387,7 +387,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fIj-MF-y5q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4568.115942028986" y="116.51785714285714"/>
+            <point key="canvasLocation" x="4567" y="96"/>
         </scene>
         <!--Trailer View Controller-->
         <scene sceneID="J3n-YY-G9Q">
@@ -438,127 +438,40 @@
             </objects>
             <point key="canvasLocation" x="4568" y="797"/>
         </scene>
-        <!--Side Menu View Controller-->
-        <scene sceneID="16Y-tz-Sla">
-            <objects>
-                <tableViewController storyboardIdentifier="SideMenuViewController" id="9bN-B4-M2n" customClass="SideMenuViewController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="dA2-Oa-sYn">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemYellowColor"/>
-                        <sections>
-                            <tableViewSection id="zGR-Si-tVe">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="first" rowHeight="46" id="MBp-aX-Zc7">
-                                        <rect key="frame" x="0.0" y="18" width="414" height="46"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MBp-aX-Zc7" id="dxR-LB-83R">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="46"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SEm-cC-apJ">
-                                                    <rect key="frame" x="20" y="11" width="75" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="SEm-cC-apJ" firstAttribute="top" secondItem="dxR-LB-83R" secondAttribute="topMargin" id="LKx-q1-OmW"/>
-                                                <constraint firstItem="SEm-cC-apJ" firstAttribute="leading" secondItem="dxR-LB-83R" secondAttribute="leadingMargin" id="mAV-QX-6Yv"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="second" rowHeight="46" id="rLZ-eE-5fP">
-                                        <rect key="frame" x="0.0" y="64" width="414" height="46"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rLZ-eE-5fP" id="zGN-9V-4Uf">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="46"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Second View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1P-kY-u8S">
-                                                    <rect key="frame" x="20" y="11" width="100" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="a1P-kY-u8S" firstAttribute="top" secondItem="zGN-9V-4Uf" secondAttribute="topMargin" id="Y04-Fp-eqJ"/>
-                                                <constraint firstItem="a1P-kY-u8S" firstAttribute="leading" secondItem="zGN-9V-4Uf" secondAttribute="leadingMargin" id="tPW-d8-oq1"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="9bN-B4-M2n" id="KWz-jU-dz3"/>
-                            <outlet property="delegate" destination="9bN-B4-M2n" id="3Wy-6A-y6V"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="cGg-iZ-UgY"/>
-                    <connections>
-                        <outlet property="firstMode" destination="MBp-aX-Zc7" id="5yT-ga-ZDu"/>
-                        <outlet property="secondMode" destination="rLZ-eE-5fP" id="uWo-AG-P3R"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="z69-iZ-Tlt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3652" y="-611"/>
-        </scene>
-        <!--View Controller-->
+        <!--Theaters-->
         <scene sceneID="Hyj-Ky-ltk">
             <objects>
-                <viewController id="KxJ-pm-ULr" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TheatersViewController" id="KxJ-pm-ULr" customClass="TheatersViewController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HKa-zF-Yoj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FAE-TA-eX4">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Title" id="qaz-89-amF">
-                                        <barButtonItem key="leftBarButtonItem" image="list.dash" catalog="system" id="6fT-5E-NhU"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AAAAAaaaaaaaaaa" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SiA-je-e5x">
+                                <rect key="frame" x="134.5" y="437.5" width="145" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemGreenColor"/>
+                                <color key="highlightedColor" systemColor="systemYellowColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BTp-Ul-9S8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="SiA-je-e5x" firstAttribute="centerY" secondItem="HKa-zF-Yoj" secondAttribute="centerY" id="Iz5-Yp-R41"/>
+                            <constraint firstItem="SiA-je-e5x" firstAttribute="centerX" secondItem="HKa-zF-Yoj" secondAttribute="centerX" id="yFE-uO-HPr"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Theaters" id="PFW-AC-QG6">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="line.horizontal.3" catalog="system" id="C6m-aQ-nOZ"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N2o-Wd-n2K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4515" y="-603"/>
+            <point key="canvasLocation" x="3680" y="-594"/>
         </scene>
-        <!--Side Menu Navigation Controller-->
-        <scene sceneID="7CB-wz-MoA">
-            <objects>
-                <navigationController storyboardIdentifier="SideMenuNavigationController" id="doD-zd-AEJ" customClass="SideMenuNavigationController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="wxO-pK-5R7"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SH0-T3-euy">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="leftSide" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <segue destination="9bN-B4-M2n" kind="relationship" relationship="rootViewController" id="vEZ-tw-mcZ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tku-h0-ero" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2761" y="-611"/>
-        </scene>
-        <!--My Navigation Controller-->
+        <!--Movies Navigation Controller-->
         <scene sceneID="S0J-dB-1hq">
             <objects>
-                <navigationController storyboardIdentifier="MyNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="pml-EW-usI" customClass="MyNavigationController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MoviesNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="pml-EW-usI" customClass="MoviesNavigationController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="agW-Bj-Cme">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -574,12 +487,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H8C-yu-ZbB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2771.0144927536235" y="95.758928571428569"/>
+            <point key="canvasLocation" x="2761" y="96"/>
         </scene>
-        <!--Side Menu Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="4eX-H0-TOa">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hUu-xw-nqq" customClass="SideMenuNavigationController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hUu-xw-nqq" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ScS-wq-Zrb">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -594,9 +507,28 @@
             </objects>
             <point key="canvasLocation" x="921.73913043478262" y="95.758928571428569"/>
         </scene>
+        <!--Theaters Navigation Controller-->
+        <scene sceneID="ZNO-fX-rbc">
+            <objects>
+                <navigationController storyboardIdentifier="TheatersNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="tAV-2V-SNK" customClass="TheatersNavigationController" customModule="welcomeApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XzW-nT-uM8">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="KxJ-pm-ULr" kind="relationship" relationship="rootViewController" id="aq2-5X-x1h"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2bk-Ha-GCY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2770" y="-594"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="list.dash" catalog="system" width="128" height="85"/>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

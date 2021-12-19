@@ -138,7 +138,6 @@ class MoviesViewModel {
             }else {
                 print("Something went wrong parsing movie desc")
             }
-            
         })
 
     }

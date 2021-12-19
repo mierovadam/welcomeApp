@@ -1,16 +1,27 @@
 import UIKit
 import SideMenu
 
-class MoviesViewController: UIViewController, UITableViewDelegate {
+import Network
 
-    private var myNav: MyNavigationController = MyNavigationController()
+class MoviesViewController: UIViewController, UITableViewDelegate, MenuControllerDelegate {
+
+    private var moviesNavigationController: MoviesNavigationController = MoviesNavigationController()
     public var movieViewModel:MoviesViewModel = MoviesViewModel()
+
     
+    private var sideMenu: SideMenuNavigationController?
+    private var theatersController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TheatersViewController") as? TheatersViewController
+
+    //    private let theatersController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TheatersViewController") as? TheatersViewController
     
     @IBOutlet weak var sortByButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     private var sortedFlag = 0  //current sort method, 0 by name or 1 if by year
+    
+    private let alert = UIAlertController(title: "Lost Connection", message: "Waiting for internet connection.", preferredStyle: UIAlertController.Style.alert)
+    private var alertFlag:Int = 0
+    private let monitor = NWPathMonitor()
     
     public var bannerData:Dict =  [String:Any]()
     private var selectedMovie:MovieDescription?
@@ -18,13 +29,25 @@ class MoviesViewController: UIViewController, UITableViewDelegate {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        checkConnection()
+
         //reload data into table
         self.tableView.dataSource = self
         self.tableView.reloadData()
         
         //show banner
         showBanner()
+        
+        //Side Menu
+        let menu = SideMenuViewController(with: SideMenuItem.allCases)
+        menu.delegate = self
+
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.leftSide = true
+
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+
+        addChildControllers()
         
         tableView.delegate = self
         
@@ -34,18 +57,56 @@ class MoviesViewController: UIViewController, UITableViewDelegate {
         
     }
     
-    @IBAction func openSideMenu(_ sender: Any){
-        // Define the menu
-        if let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SideMenuViewController") as? UITableViewController {
-            
-            let menu = SideMenuNavigationController(rootViewController: vc)
-            menu.leftSide = true
+    private func addChildControllers() {
+        addChild(theatersController!)
 
-            
-            present(menu, animated: true, completion: nil)
+        view.addSubview(theatersController!.view)
 
+        theatersController!.view.frame = view.bounds
+        theatersController!.didMove(toParent: self)
+        theatersController!.view.isHidden = true
+    }
+    
+    @IBAction func didTapMenuButton() {
+        present(sideMenu!, animated: true)
+    }
+
+    func didSelectMenuItem(named: SideMenuItem) {
+        sideMenu?.dismiss(animated: true, completion: nil)
+        
+        title = named.rawValue
+        switch named {
+        case .home:
+//            self.view.isHidden = false
+            theatersController!.view.isHidden = true
             
+        case .theaters:
+//            self.view.isHidden = true
+            theatersController!.view.isHidden = false
         }
+    }
+    
+    func checkConnection(){
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                if self.alertFlag == 1 {
+                    DispatchQueue.main.async {
+                        self.alert.dismiss(animated: true)
+                        self.alertFlag = 0
+                    }
+                }
+            } else {
+                if self.alertFlag == 0 {
+                    DispatchQueue.main.async {
+                        self.present(self.alert, animated: true, completion: nil)
+                        self.alertFlag = 1                    }
+
+                }
+            }
+        }
+        
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
     }
     
     
@@ -121,8 +182,7 @@ extension MoviesViewController: UITableViewDataSource {
                 movieDescViewController.cinemaDict = self.movieViewModel.cinemaIdDict
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
-            
-            self.myNav.pushMovieViewController(movieDescription, animated: true)
+            self.moviesNavigationController.pushMovieViewController(movieDescription, animated: true)
             
         })
                 
