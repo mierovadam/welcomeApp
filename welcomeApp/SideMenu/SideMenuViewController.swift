@@ -20,7 +20,8 @@ class SideMenuViewController: UITableViewController {
     
     public var delegate: MenuControllerDelegate?
 
-        private let menuItems: [SideMenuItem]
+    private let menuItems: [SideMenuItem]
+    
     private let color = UIColor.darkGray
 
         init(with menuItems: [SideMenuItem]) {
@@ -39,6 +40,7 @@ class SideMenuViewController: UITableViewController {
             tableView.backgroundColor = color
             tableView.separatorStyle = .none
             view.backgroundColor = color
+            UINavigationBar.appearance().barTintColor = color
         }
 
         // Table

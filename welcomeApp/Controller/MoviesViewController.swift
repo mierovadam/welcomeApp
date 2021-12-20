@@ -4,21 +4,20 @@ import SideMenu
 import Network
 
 class MoviesViewController: UIViewController, UITableViewDelegate, MenuControllerDelegate {
-
-    private var moviesNavigationController: MoviesNavigationController = MoviesNavigationController()
-    public var movieViewModel:MoviesViewModel = MoviesViewModel()
-
-    
-    private var sideMenu: SideMenuNavigationController?
-    private var theatersController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TheatersViewController") as? TheatersViewController
-
-    //    private let theatersController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TheatersViewController") as? TheatersViewController
-    
+    //IBOutlets
     @IBOutlet weak var sortByButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    //SideMenu
+    private var sideMenu: SideMenuNavigationController?
+    public var theatersController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TheatersViewController") as? TheatersViewController
+
+    private var moviesNavigationController: MoviesNavigationController = MoviesNavigationController()
+    public var movieViewModel:MoviesViewModel = MoviesViewModel()
+    
     private var sortedFlag = 0  //current sort method, 0 by name or 1 if by year
     
+    //Alert
     private let alert = UIAlertController(title: "Lost Connection", message: "Waiting for internet connection.", preferredStyle: UIAlertController.Style.alert)
     private var alertFlag:Int = 0
     private let monitor = NWPathMonitor()
@@ -27,34 +26,37 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
     private var selectedMovie:MovieDescription?
     private var selectedIndexPath: IndexPath!
         
-    override func viewDidLoad() {
+    override func viewDidLoad(){
         super.viewDidLoad()
+        
+        //Init connection alert
         checkConnection()
 
         //reload data into table
         self.tableView.dataSource = self
         self.tableView.reloadData()
+        tableView.delegate = self
         
         //show banner
         showBanner()
         
         //Side Menu
-        let menu = SideMenuViewController(with: SideMenuItem.allCases)
-        menu.delegate = self
-
-        sideMenu = SideMenuNavigationController(rootViewController: menu)
-        sideMenu?.leftSide = true
-
-        SideMenuManager.default.leftMenuNavigationController = sideMenu
-
-        addChildControllers()
-        
-        tableView.delegate = self
+        initSideMenu()
         
         //Nav bar settings
         self.navigationController?.navigationBar.isHidden = false
         navigationItem.hidesBackButton = true
         
+    }
+    
+    private func initSideMenu() {
+        let menu = SideMenuViewController(with: SideMenuItem.allCases)
+        menu.delegate = self
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.leftSide = true
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+
+        addChildControllers()
     }
     
     private func addChildControllers() {
@@ -65,6 +67,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         theatersController!.view.frame = view.bounds
         theatersController!.didMove(toParent: self)
         theatersController!.view.isHidden = true
+        
     }
     
     @IBAction func didTapMenuButton() {
@@ -154,9 +157,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
             self.tableView.dataSource = self
             self.tableView.reloadData()
         })
-        
     }
-    
 }
 
 extension MoviesViewController: UITableViewDataSource {
@@ -175,15 +176,13 @@ extension MoviesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        movieViewModel.fetchDetailedMovie(cellIndexPath: indexPath, completion: {(movieDescription) -> Void in
+        movieViewModel.fetchDetailedMovie(movieViewModel.cellForRowAt(indexPath: indexPath), completion: {(movieDescription) -> Void in
             
             if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
                 movieDescViewController.movie = movieDescription
-                movieDescViewController.cinemaDict = self.movieViewModel.cinemaIdDict
+                movieDescViewController.cinemaDict = self.movieViewModel.idCinemaDict
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
-            self.moviesNavigationController.pushMovieViewController(movieDescription, animated: true)
-            
         })
                 
         tableView.deselectRow(at: indexPath, animated: true)

@@ -3,11 +3,11 @@ import UIKit
 class MoviesViewModel {
 
     private var apiService = ApiService()
-    private var moviesList = [Movie]()
+    var moviesList = [Movie]()
     let decoder = JSONDecoder()
         
     private var token: Any?
-    public var cinemaIdDict :[String:String] = [String:String]()
+    public var idCinemaDict: [String:String] = [:]
     
     private var filteredMovieList = [Movie]()
     
@@ -86,7 +86,7 @@ class MoviesViewModel {
     
     func CinemasToDictionary(_ data:[[String:Any]]){
         for item in data {
-            cinemaIdDict[item["id"] as! String] = item["name"] as? String
+            idCinemaDict[item["id"] as! String] = item["name"] as? String
         }
     }
     
@@ -125,11 +125,9 @@ class MoviesViewModel {
         return tempArr
     }
     
-    func fetchDetailedMovie(cellIndexPath index:IndexPath, completion: @escaping (MovieDescription) -> ()) {
-
+    func fetchDetailedMovie(_ movie:Movie, completion: @escaping (MovieDescription) -> ()) {
         var parameters: [String:Any] {return ["token": token!]}
-        
-        let baseRequest: BaseRequest = BaseRequest(requestName: "descriptionMovies/\(cellForRowAt(indexPath: index).id)", parameters: parameters)
+        let baseRequest: BaseRequest = BaseRequest(requestName: "descriptionMovies/\(movie.id)", parameters: parameters)
         
         self.apiService.sendRequest(baseRequest, completion: { (result) in
             if let data = result["data"] as? [String:Any]{

@@ -30,7 +30,14 @@ class SplashViewController: UIViewController {
             moviesViewController.modalPresentationStyle = .fullScreen
             moviesViewController.bannerData = bannerData
             moviesViewController.movieViewModel = movieViewModel
+            
+            moviesViewController.theatersController?.idCinemaDict = moviesViewController.movieViewModel.idCinemaDict
+            moviesViewController.theatersController?.moviesList = movieViewModel.moviesList
+            moviesViewController.theatersController?.movieViewModel = movieViewModel
+
+            
             navigationController?.pushViewController(moviesViewController, animated: true)
         }
     }
+    
 }
