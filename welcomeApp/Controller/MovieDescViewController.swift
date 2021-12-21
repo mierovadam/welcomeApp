@@ -1,4 +1,5 @@
 import UIKit
+import MapKit
 
 class MovieDescViewController: UIViewController {
     
@@ -8,6 +9,8 @@ class MovieDescViewController: UIViewController {
     @IBOutlet weak var theatersLBL: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var overviewLBL: UILabel!
+    
+    var movieViewModel:MoviesViewModel = MoviesViewModel()
     
     public var movie:MovieDescription?
     public var cinemaDict: [String:String] = [String:String]()
@@ -54,5 +57,21 @@ class MovieDescViewController: UIViewController {
         }
     }
     
+    @IBAction func ShowTheaterLocations(_ sender: Any) {
+        if movie?.cenimasId == nil {
+            return
+        }
+        if let movieMapViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieMapViewController") as? MovieMapViewController {
 
+            var theaterLocations: [CLLocationCoordinate2D] = []
+            for theater in movie!.cenimasId {
+                theaterLocations.append(movieViewModel.idLocationDict[String(theater)]! )
+            }
+            movieMapViewController.locations = theaterLocations
+            movieMapViewController.movieTitle = movie!.name
+            
+            self.navigationController?.pushViewController(movieMapViewController, animated: true)
+        }
+    }
+    
 }

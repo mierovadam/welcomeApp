@@ -67,7 +67,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         theatersController!.view.frame = view.bounds
         theatersController!.didMove(toParent: self)
         theatersController!.view.isHidden = true
-        
     }
     
     @IBAction func didTapMenuButton() {
@@ -181,6 +180,7 @@ extension MoviesViewController: UITableViewDataSource {
             if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
                 movieDescViewController.movie = movieDescription
                 movieDescViewController.cinemaDict = self.movieViewModel.idCinemaDict
+                movieDescViewController.movieViewModel = self.movieViewModel
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
         })

@@ -2,10 +2,10 @@ import UIKit
 
 class SplashViewController: UIViewController {
     
+    @IBOutlet weak var progressBar: UIProgressView!
+    
     private var movieViewModel = MoviesViewModel()
     var bannerData:Dict =  [String:Any]()
-    
-    @IBOutlet weak var progressBar: UIProgressView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,17 +27,17 @@ class SplashViewController: UIViewController {
     
     private func pushMoviesViewController() {
         if let moviesViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MoviesViewController") as? MoviesViewController {
+            //init moviesViewController, theatersController properties
             moviesViewController.modalPresentationStyle = .fullScreen
             moviesViewController.bannerData = bannerData
             moviesViewController.movieViewModel = movieViewModel
             
+            moviesViewController.theatersController?.cinemaIdDict = moviesViewController.movieViewModel.cinemaIdDict
             moviesViewController.theatersController?.idCinemaDict = moviesViewController.movieViewModel.idCinemaDict
-            moviesViewController.theatersController?.moviesList = movieViewModel.moviesList
+            moviesViewController.theatersController?.idLocationDict = moviesViewController.movieViewModel.idLocationDict
             moviesViewController.theatersController?.movieViewModel = movieViewModel
-
             
             navigationController?.pushViewController(moviesViewController, animated: true)
         }
     }
-    
 }

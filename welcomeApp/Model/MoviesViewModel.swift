@@ -1,4 +1,5 @@
 import UIKit
+import MapKit
 
 class MoviesViewModel {
 
@@ -8,6 +9,10 @@ class MoviesViewModel {
         
     private var token: Any?
     public var idCinemaDict: [String:String] = [:]
+    public var cinemaIdDict: [String:String] = [:]
+    public var idLocationDict: [String:CLLocationCoordinate2D] = [:]
+    public var movieTheatersDict: [String: [CLLocationCoordinate2D]] = [:]      //movieID to theater locations array
+
     
     private var filteredMovieList = [Movie]()
     
@@ -72,9 +77,8 @@ class MoviesViewModel {
                                 self.apiService.sendRequest(baseRequest, completion: { result in
                                     let data = result["data"] as? [String: Any]
                                     let cinemas = data?["cinemas"] as? [[String:Any]]
-                                    self.CinemasToDictionary(cinemas ?? [[String:Any]]())
+                                    self.initDictionarys(cinemas ?? [[String:Any]]())
                                 })
-                                
                                 completion(banner)
                             })
                         })
@@ -84,9 +88,15 @@ class MoviesViewModel {
         })
     }
     
-    func CinemasToDictionary(_ data:[[String:Any]]){
+    func initDictionarys(_ data:[[String:Any]]){
+        var lat,lng: String
+        
         for item in data {
             idCinemaDict[item["id"] as! String] = item["name"] as? String
+            cinemaIdDict[item["name"] as! String] = item["id"] as? String
+            lat = item["lat"] as! String
+            lng = item["lng"] as! String
+            idLocationDict[item["id"] as! String] = CLLocationCoordinate2D(latitude: Double(lat)! , longitude: Double(lng)! )
         }
     }
     
