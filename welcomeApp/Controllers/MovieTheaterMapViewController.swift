@@ -13,7 +13,7 @@ class MovieTheaterMapViewController: UIViewController, MKMapViewDelegate {
     
     var movieViewModel:MoviesViewModel = MoviesViewModel()
     
-    var annotation: MKPointAnnotation! = nil
+    var annotation: MKPointAnnotation = MKPointAnnotation()
     
     var theaterName:String = ""
     var movie:Movie = Movie()
@@ -24,11 +24,6 @@ class MovieTheaterMapViewController: UIViewController, MKMapViewDelegate {
         
         self.title = "\(movie.name)"
         
-        if annotation != nil {  //remove previous pins
-            mapView.removeAnnotation(annotation)
-        }
-        
-        annotation = MKPointAnnotation()
         annotation.title = theaterName
         annotation.coordinate = location
         mapView.addAnnotation(annotation)
@@ -36,9 +31,7 @@ class MovieTheaterMapViewController: UIViewController, MKMapViewDelegate {
         UIView.animate(withDuration: 1.0) {
             self.annotation.coordinate = self.location
         }
-        
-        mapView.delegate = self
-        
+                
         //Zoom to user location
         let viewRegion = MKCoordinateRegion(center: location, latitudinalMeters: 200, longitudinalMeters: 200)
         mapView.setRegion(viewRegion, animated: true)
@@ -50,10 +43,8 @@ class MovieTheaterMapViewController: UIViewController, MKMapViewDelegate {
             
             if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
                 movieDescViewController.movie = movieDescription
-                movieDescViewController.cinemaDict = self.movieViewModel.idCinemaDict
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
         })
-                
     }
 }

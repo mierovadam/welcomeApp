@@ -15,7 +15,7 @@
 		930F3DEC2758EFD100BB82E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 930F3DEB2758EFD100BB82E2 /* Assets.xcassets */; };
 		930F3DEF2758EFD100BB82E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 930F3DED2758EFD100BB82E2 /* LaunchScreen.storyboard */; };
 		930F3DF92759072E00BB82E2 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3DF82759072E00BB82E2 /* Model.swift */; };
-		930F3DFB2759083D00BB82E2 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3DFA2759083D00BB82E2 /* ApiService.swift */; };
+		930F3DFB2759083D00BB82E2 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3DFA2759083D00BB82E2 /* RequestManager.swift */; };
 		930F3DFD2759088A00BB82E2 /* MovieTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3DFC2759088A00BB82E2 /* MovieTableCell.swift */; };
 		930F3E0327591D6000BB82E2 /* MoviesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F3E0227591D6000BB82E2 /* MoviesViewModel.swift */; };
 		93566915276A2BA0009A9C33 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93566914276A2BA0009A9C33 /* SideMenuViewController.swift */; };
@@ -44,7 +44,7 @@
 		930F3DEE2758EFD100BB82E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		930F3DF02758EFD100BB82E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		930F3DF82759072E00BB82E2 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		930F3DFA2759083D00BB82E2 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		930F3DFA2759083D00BB82E2 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		930F3DFC2759088A00BB82E2 /* MovieTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableCell.swift; sourceTree = "<group>"; };
 		930F3E0227591D6000BB82E2 /* MoviesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewModel.swift; sourceTree = "<group>"; };
 		93566914276A2BA0009A9C33 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 				935EB00D276F21DD008CFDB2 /* NavigationControllers */,
 				93566911276A1FB2009A9C33 /* SideMenu */,
 				939249582768C4B700439A11 /* Service */,
-				930F3DFF275917F200BB82E2 /* Controller */,
+				930F3DFF275917F200BB82E2 /* Controllers */,
 				930F3DFE275917E700BB82E2 /* Model */,
 				935CA83F2767703A0019D0C7 /* Utils.swift */,
 				930F3DE22758EFCD00BB82E2 /* AppDelegate.swift */,
@@ -141,19 +141,19 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		930F3DFF275917F200BB82E2 /* Controller */ = {
+		930F3DFF275917F200BB82E2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				930F3DE62758EFCD00BB82E2 /* MoviesViewController.swift */,
-				93DF2D6F275E5DEF00E09532 /* MovieDescViewController.swift */,
-				93DCBC662760E32D00473EA9 /* TrailerViewController.swift */,
-				935CA83D2767547A0019D0C7 /* BannerViewController.swift */,
 				9392495627689AA100439A11 /* SplashViewController.swift */,
 				935EB00B276F17A3008CFDB2 /* TheatersViewController.swift */,
+				935CA83D2767547A0019D0C7 /* BannerViewController.swift */,
+				93DF2D6F275E5DEF00E09532 /* MovieDescViewController.swift */,
+				93DCBC662760E32D00473EA9 /* TrailerViewController.swift */,
 				93CC70F62771D0460007F536 /* MovieTheaterMapViewController.swift */,
 				938CADA827721B9100BF5A47 /* MovieMapViewController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		93566911276A1FB2009A9C33 /* SideMenu */ = {
@@ -175,7 +175,7 @@
 		939249582768C4B700439A11 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				930F3DFA2759083D00BB82E2 /* ApiService.swift */,
+				930F3DFA2759083D00BB82E2 /* RequestManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -325,7 +325,7 @@
 				93D0DFED2770920B006F6926 /* TheaterTableCell.swift in Sources */,
 				93EB7F29276633C500992D17 /* BaseRequest.swift in Sources */,
 				930F3DE72758EFCD00BB82E2 /* MoviesViewController.swift in Sources */,
-				930F3DFB2759083D00BB82E2 /* ApiService.swift in Sources */,
+				930F3DFB2759083D00BB82E2 /* RequestManager.swift in Sources */,
 				930F3DE32758EFCD00BB82E2 /* AppDelegate.swift in Sources */,
 				93DF2D70275E5DEF00E09532 /* MovieDescViewController.swift in Sources */,
 				930F3DE52758EFCD00BB82E2 /* SceneDelegate.swift in Sources */,

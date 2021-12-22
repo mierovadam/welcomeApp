@@ -10,7 +10,6 @@ import MapKit
 
 class TheatersViewController: UIViewController, UITableViewDelegate {
 
-    //IBOutlets
     @IBOutlet weak var currentTheaterTextView: UITextField!
     @IBOutlet weak var dropDownTableView: UITableView!
     @IBOutlet weak var moviesCollectionView: UICollectionView!
@@ -19,11 +18,12 @@ class TheatersViewController: UIViewController, UITableViewDelegate {
     
     var movieViewModel:MoviesViewModel = MoviesViewModel()
     
+    // fromToDicts
     var idCinemaDict: [String:String] = [:]
-    var idLocationDict: [String:CLLocationCoordinate2D] = [:]
-    var theatersMoviesDict: [String:[Movie]] = [:]
     var cinemaIdDict: [String:String] = [:]
-
+    var theatersMoviesDict: [String:[Movie]] = [:]
+    var idLocationDict: [String:CLLocationCoordinate2D] = [:]
+    
     var theaters:[String] = []
     var currentViewingMovies: [Movie] = []
     var selectedMovie:Movie = Movie()
@@ -37,7 +37,7 @@ class TheatersViewController: UIViewController, UITableViewDelegate {
         //init theater names string array
         theaters = getTheatersStrings(idCinemaDict)
         //init theater id to movie arr dict
-        theatersToMovies()
+        initDicts()
                                 
         initViews()
     }
@@ -69,8 +69,8 @@ class TheatersViewController: UIViewController, UITableViewDelegate {
         return arr
     }
     
-    func theatersToMovies() {
-        //init all dict values into empty arrays
+    func initDicts() {
+        //init dict values to empty arrays
         for id in idCinemaDict.keys {
             theatersMoviesDict[String(id)] = []
         }
@@ -112,14 +112,13 @@ class TheatersViewController: UIViewController, UITableViewDelegate {
         movieViewModel.fetchDetailedMovie(movie, completion: {(movieDescription) -> Void in
             if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
                 movieDescViewController.movie = movieDescription
-                movieDescViewController.cinemaDict = self.movieViewModel.idCinemaDict
                 movieDescViewController.movieViewModel = self.movieViewModel
+                //movieDescViewController.mapViewBTN.isHidden = true
 
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
         })
     }
-    
 }
 extension TheatersViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

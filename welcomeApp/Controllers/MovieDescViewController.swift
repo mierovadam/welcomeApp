@@ -9,11 +9,11 @@ class MovieDescViewController: UIViewController {
     @IBOutlet weak var theatersLBL: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var overviewLBL: UILabel!
+    @IBOutlet weak var mapViewBTN: UIButton!
     
     var movieViewModel:MoviesViewModel = MoviesViewModel()
     
     public var movie:MovieDescription?
-    public var cinemaDict: [String:String] = [String:String]()
     
     let utils:Utils = Utils()
     
@@ -35,15 +35,14 @@ class MovieDescViewController: UIViewController {
         categoryLBL.text = movie?.category
         rateLBL.text = movie?.rate
         overviewLBL.text = movie?.description
-                
+        
         var str: String = ""
         for cinemaId in movie!.cenimasId {
-            let cinema:String = cinemaDict[String(cinemaId)] ?? ""
+            let cinema:String = movieViewModel.idCinemaDict[String(cinemaId)] ?? ""
             str.append("\(cinema)\n")
         }
         theatersLBL.text = str
-        
-        }
+    }
     
     @IBAction func openTrailer(_ sender: Any) {
         if let trailerViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TrailerViewController") as? TrailerViewController {
@@ -53,22 +52,32 @@ class MovieDescViewController: UIViewController {
             self.navigationController?.navigationBar.isHidden = true
             
             present(trailerViewController, animated: true)
-            
         }
     }
     
     @IBAction func ShowTheaterLocations(_ sender: Any) {
-        if movie?.cenimasId == nil {
+        if movie?.cenimasId == nil || movie?.cenimasId.count == 0 {
+            //show toast or smthing here
             return
         }
         if let movieMapViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieMapViewController") as? MovieMapViewController {
-
+            
             var theaterLocations: [CLLocationCoordinate2D] = []
+            var theaterNames: [String] = []
+            
+            // Some Cinema ID's are not defined on server (20,12) and more, they'll be filtered here and not displayed in next screen
             for theater in movie!.cenimasId {
-                theaterLocations.append(movieViewModel.idLocationDict[String(theater)]! )
+                if let tempLocation = movieViewModel.idLocationDict[String(theater)] {
+                    if let tempTheaterName = movieViewModel.idCinemaDict[String(theater)] {
+                        theaterLocations.append(tempLocation)
+                        theaterNames.append(tempTheaterName)
+                    }
+                }
             }
+            
             movieMapViewController.locations = theaterLocations
             movieMapViewController.movieTitle = movie!.name
+            movieMapViewController.theaterNames = theaterNames
             
             self.navigationController?.pushViewController(movieMapViewController, animated: true)
         }

@@ -1,13 +1,13 @@
 import UIKit
 import SideMenu
 
-import Network
-
 class MoviesViewController: UIViewController, UITableViewDelegate, MenuControllerDelegate {
     //IBOutlets
     @IBOutlet weak var sortByButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    public var bannerData:Dict =  [String:Any]()
+
     //SideMenu
     private var sideMenu: SideMenuNavigationController?
     public var theatersController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "TheatersViewController") as? TheatersViewController
@@ -17,28 +17,18 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
     
     private var sortedFlag = 0  //current sort method, 0 by name or 1 if by year
     
-    //Alert
-    private let alert = UIAlertController(title: "Lost Connection", message: "Waiting for internet connection.", preferredStyle: UIAlertController.Style.alert)
-    private var alertFlag:Int = 0
-    private let monitor = NWPathMonitor()
-    
-    public var bannerData:Dict =  [String:Any]()
+    //Selected vars
     private var selectedMovie:MovieDescription?
     private var selectedIndexPath: IndexPath!
         
     override func viewDidLoad(){
         super.viewDidLoad()
         
-        //Init connection alert
-        checkConnection()
-
-        //reload data into table
-        self.tableView.dataSource = self
-        self.tableView.reloadData()
-        tableView.delegate = self
-        
         //show banner
         showBanner()
+
+        //load data into table
+        self.tableView.reloadData()
         
         //Side Menu
         initSideMenu()
@@ -46,7 +36,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         //Nav bar settings
         self.navigationController?.navigationBar.isHidden = false
         navigationItem.hidesBackButton = true
-        
     }
     
     private func initSideMenu() {
@@ -79,38 +68,12 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         title = named.rawValue
         switch named {
         case .home:
-//            self.view.isHidden = false
             theatersController!.view.isHidden = true
             
         case .theaters:
-//            self.view.isHidden = true
             theatersController!.view.isHidden = false
         }
     }
-    
-    func checkConnection(){
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                if self.alertFlag == 1 {
-                    DispatchQueue.main.async {
-                        self.alert.dismiss(animated: true)
-                        self.alertFlag = 0
-                    }
-                }
-            } else {
-                if self.alertFlag == 0 {
-                    DispatchQueue.main.async {
-                        self.present(self.alert, animated: true, completion: nil)
-                        self.alertFlag = 1                    }
-
-                }
-            }
-        }
-        
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
-    }
-    
     
     func showBanner(){
         if let bannerViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "BannerViewController") as? BannerViewController {
@@ -123,7 +86,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         }
     }
     
-    
     @IBAction func sortButtonAction(_ sender: Any) {
         if sortedFlag == 0 {
             movieViewModel.sortMoviesByYear()
@@ -134,7 +96,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
             sortByButton.setTitle("Sort By Year", for: .normal)
             sortedFlag = 0
         }
-        self.tableView.dataSource = self
         self.tableView.reloadData()
     }
     
@@ -142,8 +103,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         let buttonText = (sender.titleLabel?.text)!
         
         movieViewModel.filterByCategory(buttonText, completion: {
-            //reload table
-            self.tableView.dataSource = self
             self.tableView.reloadData()
         })
     }
@@ -152,8 +111,6 @@ class MoviesViewController: UIViewController, UITableViewDelegate, MenuControlle
         let searchText = sender.text
         
         movieViewModel.filterByTitle(searchText ?? "", completion: {
-            //reload table
-            self.tableView.dataSource = self
             self.tableView.reloadData()
         })
     }
@@ -179,12 +136,12 @@ extension MoviesViewController: UITableViewDataSource {
             
             if let movieDescViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MovieDescViewController") as? MovieDescViewController {
                 movieDescViewController.movie = movieDescription
-                movieDescViewController.cinemaDict = self.movieViewModel.idCinemaDict
                 movieDescViewController.movieViewModel = self.movieViewModel
+                //movieDescViewController.mapViewBTN.isHidden = false
+                
                 self.navigationController?.pushViewController(movieDescViewController, animated: true)
             }
         })
-                
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

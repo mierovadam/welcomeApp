@@ -3,11 +3,11 @@ import Alamofire
 
 typealias Dict = [String: Any]
 
-class ApiService {
+class RequestManager {
 
+    static let shared = RequestManager()
     private var dataTask: URLSessionDataTask?
     public var hostURL = "http://mobile.inmanage.com/mobile-test/"
-    
     
     public func sendRequest(_ request: BaseRequest, completion: @escaping (Dict) -> Void) {
         

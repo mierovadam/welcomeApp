@@ -2,19 +2,22 @@ import UIKit
 import MapKit
 
 class MoviesViewModel {
-
-    private var apiService = ApiService()
+    
+    private var apiService = RequestManager()
     var moviesList = [Movie]()
     let decoder = JSONDecoder()
-        
+    
     private var token: Any?
+    
+    // fromToDict
     public var idCinemaDict: [String:String] = [:]
     public var cinemaIdDict: [String:String] = [:]
     public var idLocationDict: [String:CLLocationCoordinate2D] = [:]
     public var movieTheatersDict: [String: [CLLocationCoordinate2D]] = [:]      //movieID to theater locations array
-
     
     private var filteredMovieList = [Movie]()
+    
+    
     
     func initialization(_ progressBar:UIProgressView, completion: @escaping ([String:Any]) -> ()) {
         
@@ -23,36 +26,36 @@ class MoviesViewModel {
         apiService.sendRequest(baseRequest, completion: { (result) in
             let urlDict = result["data"] as! [String:Any]
             self.apiService.hostURL = urlDict["url"] as! String
-
+            
             progressBar.progress = 0.17
             
             baseRequest = BaseRequest(requestName: "clearSession")
             self.apiService.sendRequest(baseRequest, completion: { (result) in
-//                print("clearSession Result:\n \(result)")
-
+                //                print("clearSession Result:\n \(result)")
+                
                 progressBar.progress = 0.34
-
+                
                 baseRequest = BaseRequest(requestName: "applicationToken")
                 self.apiService.sendRequest(baseRequest, completion: { (result) in
                     let tokenDict = result["data"] as! [String:Any]
                     self.token = tokenDict["token"]
                     
                     var parameters: [String: Any] {
-                           return ["resolution": "3x",
-                                   "application_version": 1.3,
-                                   "OS_Version": 14.5,
-                                   "udid":"aaaaa",
-                                   "token":self.token!]
+                        return ["resolution": "3x",
+                                "application_version": 1.3,
+                                "OS_Version": 14.5,
+                                "udid":"aaaaa",
+                                "token":self.token!]
                     }
                     
                     progressBar.progress = 0.51
-
+                    
                     baseRequest = BaseRequest(requestName: "setSettings",parameters: parameters)
                     self.apiService.sendRequest(baseRequest, completion: { (result) in
-//                        print("setSettings Results:\n \(result)")
+                        //                        print("setSettings Results:\n \(result)")
                         
                         progressBar.progress = 0.68
-
+                        
                         baseRequest = BaseRequest(requestName: "validateVersion",parameters: parameters)
                         self.apiService.sendRequest(baseRequest, completion: { (result) in
                             let stateDict = result["data"] as! [String:Any]
@@ -62,7 +65,7 @@ class MoviesViewModel {
                                 print("VersionState not supported/deprecated")
                                 return
                             }
-
+                            
                             progressBar.progress = 0.85
                             
                             
@@ -117,7 +120,7 @@ class MoviesViewModel {
             self.sortMoviesByYear()
             
             completion()
-            })
+        })
     }
     
     func dictToMovieList(_ dict:[[String:Any]]) -> [Movie]{
@@ -147,7 +150,7 @@ class MoviesViewModel {
                 print("Something went wrong parsing movie desc")
             }
         })
-
+        
     }
     
     func parseMovieDesc(_ data:[String:Any]) -> MovieDescription {
@@ -163,7 +166,7 @@ class MoviesViewModel {
         tempMovie.rate = data["rate"] as? String ?? ""
         tempMovie.hour = data["hour"] as? String ?? ""
         tempMovie.cenimasId = data["cenimasId"] as? [Int] ?? []
-
+        
         return tempMovie
     }
     
@@ -181,13 +184,13 @@ class MoviesViewModel {
             }
             filteredMovieList = tempMovieList
         }
-                
+        
         completion()
     }
     
     func filterByCategory(_ categoryName: String,completion: @escaping () -> ()){
         if categoryName == "All" {
-        filteredMovieList = moviesList
+            filteredMovieList = moviesList
         } else {
             filteredMovieList.removeAll()
             
@@ -196,7 +199,7 @@ class MoviesViewModel {
                     filteredMovieList.append(movie)
                 }
             }
-
+            
         }
         completion()
     }
@@ -216,6 +219,6 @@ class MoviesViewModel {
     func sortMoviesByYear(){
         filteredMovieList.sort { $1.year.localizedStandardCompare($0.year) == .orderedAscending }
     }
-
+    
 }
 
